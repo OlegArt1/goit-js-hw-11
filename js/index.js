@@ -1,59 +1,56 @@
+// Search gallery
 
 import axios from 'axios';
 
-import Notiflix from 'notiflix';
+import SimpleLightbox from '../simplelightbox/dist/simple-lightbox.js';
 
-import SimpleLightbox from 'simplelightbox';
-
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import '../simplelightbox/dist/simple-lightbox-min.css';
 
 const refs =
 {
-  form: document.querySelector('.search-form'),
+    form: document.querySelector('.search-form'),
 
-  input: document.querySelector('input'),
+    input: document.querySelector('input'),
 
-  gallery: document.querySelector('.gallery'),
+    gallery: document.querySelector('.gallery'),
 
-  btnLoadMore: document.querySelector('.load-more'),
+    btnLoadMore: document.querySelector('.load-more'),
 };
-
 let count = 1;
 
 refs.btnLoadMore.style.display = 'none';
-refs.form.addEventListener('submit', onSearch);
-refs.btnLoadMore.addEventListener('click', onBtnLoadMore);
 
-function onSearch(evt) {
-  evt.preventDefault();
-
-  count = 1;
-  refs.gallery.inif (name !== '')
-  nerHTML = '';
-
-  const name = refs.input.value.trim();
-
-  {
-    pixabay(name);
-
-  } else {
-    refs.btnLoadMore.style.display = 'none';
-
-    // вивести повідомлення про те, що НЕ знайдено жодного зображення
-    return Notiflix.Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
-  }
-}
-function onBtnLoadMore()
+refs.form.addEventListener('submit', (e) =>
 {
-  
+    e.preventDefault();
+
+    count = 1;
+    
+    refs.gallery.innerHTML = '';
+   
+    const name = refs.input.value.trim();
+
+    if (name !== "")
+    {
+        pixabay(name);
+    }
+    else
+    {
+        refs.btnLoadMore.style.display = 'none';
+
+        console.log("\nSorry, there are no images matching your search query. Please try again!");
+
+        return Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again!');
+    }
+});
+refs.btnLoadMore.addEventListener('click', () =>
+{
     const name = refs.input.value.trim();
   
     count += 1;
   
     pixabay(name, count);
-}
+});
 async function pixabay (name, count)
 {
     const API_URL = 'https://pixabay.com/api/';
@@ -120,7 +117,7 @@ const simpleLightBox = new SimpleLightbox('.gallery a',
 {
     captionsData: 'alt',
 
-    captionDelay: 250,
+    captionDelay: 250
 });
 function notification (total_length, hits)
 {

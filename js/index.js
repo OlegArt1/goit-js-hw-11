@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-import SimpleLightbox from '../simplelightbox/dist/simple-lightbox.js';
+import { SimpleLightbox } from '../simplelightbox/dist/simple-lightbox.js';
 
 import '../simplelightbox/dist/simple-lightbox-min.css';
 
@@ -51,26 +51,24 @@ refs.btnLoadMore.addEventListener('click', () =>
 });
 async function pixabay (name, count)
 {
-    const API_URL = 'https://pixabay.com/api/';
+    const url = 'https://pixabay.com/api/';
 
     const options =
     {
         params:
         {
-            key: '33717102-715c10c4f2cae8a60768f134f',
-            q: name,
-            image_type: 'photo',
-            orientation: 'horizontal',
-            safesearch: 'true',
-            page: page,
-            per_page: 40
+            key: '33717102-715c10c4f2cae8a60768f134f', q: name,
+            
+            image_type: 'photo', orientation: 'horizontal', safesearch: 'true',
+            
+            page: page, per_page: 40
         }
     };
     try
     {
-        const response = await axios.get(API_URL, options);
+        const response = await axios.get(url, options);
 
-        notification(response.data.hits.length, response.data.total);
+        notification(response.data.hits.length, response.data.hits);
 
         createMarkup(response.data);
     } 

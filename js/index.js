@@ -6,29 +6,27 @@ import SimpleLightbox from '../simplelightbox/dist/simple-lightbox.js';
 
 import '../simplelightbox/dist/simple-lightbox-min.css';
 
-const refs =
-{
-    form: document.querySelector('.search-form'),
+const gallery = document.querySelector('.gallery');
 
-    input: document.querySelector('input'),
+const formElement = document.querySelector('.search-form');
 
-    gallery: document.querySelector('.gallery'),
+const inputElement =  document.querySelector('input');
 
-    btnLoadMore: document.querySelector('.load-more'),
-};
+const buttonElement = document.querySelector('.load-more');
+
 let count = 1;
 
-refs.btnLoadMore.style.display = 'none';
+buttonElement.style.display = 'none';
 
-refs.form.addEventListener('submit', (e) =>
+formElement.addEventListener('submit', (e) =>
 {
     e.preventDefault();
 
     count = 1;
     
-    refs.gallery.innerHTML = '';
+    gallery.innerHTML = '';
    
-    const name = refs.input.value.trim();
+    const name = inputElement.value.trim();
 
     if (name !== "")
     {
@@ -36,7 +34,7 @@ refs.form.addEventListener('submit', (e) =>
     }
     else
     {
-        refs.btnLoadMore.style.display = 'none';
+        buttonElement.style.display = 'none';
 
         console.log("\nSorry, there are no images matching your search query. Please try again!");
 
@@ -45,7 +43,7 @@ refs.form.addEventListener('submit', (e) =>
 });
 refs.btnLoadMore.addEventListener('click', () =>
 {
-    const name = refs.input.value.trim();
+    const name = inputElement.value.trim();
   
     count += 1;
   
@@ -78,7 +76,7 @@ async function pixabay (name, count)
     } 
     catch (error)
     {
-        console.log(error);
+        console.log("\n Error: " + error.name + " - " + error.message);
     }
 }
 function createMarkup (data)
@@ -109,7 +107,7 @@ function createMarkup (data)
 
     }).sort().join('');
 
-    refs.gallery.insertAdjacentHTML('beforeend', markup);
+    gallery.insertAdjacentHTML('beforeend', markup);
 
     simpleLightBox.refresh();
 }

@@ -1,34 +1,32 @@
-// Search gallery
+// 
 
-import axios from 'axios';
+import { data } from "./data.js";
 
-import { SimpleLightbox } from '../simplelightbox/dist/simple-lightbox.js';
+const gallery = document.querySelector("div.gallery");
 
-import '../simplelightbox/dist/simple-lightbox-min.css';
+const searchForm = document.querySelector(".search-form");
 
-const gallery = document.querySelector('.gallery');
+const searchInput = document.querySelector(".input");
 
-const formElement = document.querySelector('.search-form');
+const searchButton = document.querySelector("button");
 
-const inputElement =  document.querySelector('input');
-
-const buttonElement = document.querySelector('.load-more');
+const buttonElement = document.querySelector(".learn-more");
 
 let count = 1;
 
-buttonElement.style.display = 'none';
-
-formElement.addEventListener('submit', (e) =>
+searchInput.addEventListener("input", (e) =>
 {
     e.preventDefault();
 
     count = 1;
-    
-    gallery.innerHTML = '';
-   
-    const name = inputElement.value.trim();
 
-    if (name !== "")
+    gallery.innerHTML = "";
+
+    const target_value = searchInput.value.trim();
+
+    console.log(target_value);
+
+    if (target_value !== '')
     {
         pixabay(name);
     }
@@ -36,19 +34,54 @@ formElement.addEventListener('submit', (e) =>
     {
         buttonElement.style.display = 'none';
 
-        console.log("\nSorry, there are no images matching your search query. Please try again!");
-
-        return Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again!');
+        return Notiflix.Notify.failure("Sorry, t'here are no images matching your search query. Please try again.");
     }
 });
-refs.btnLoadMore.addEventListener('click', () =>
+function renderGalleryList (data)
 {
-    const name = inputElement.value.trim();
-  
-    count += 1;
-  
-    pixabay(name, count);
-});
+    const markup_list = data.hits.map((card) =>
+    {
+        return "<div class='photo-card'>" +
+                   `<img src="${card.largeImageURL}" loading='lazy' alt="${card.tags}"/>` +
+                   "<div class='info'>" +
+                       "<p class='info-item'>" +
+                           `<b>Likes:${card.likes}</b>` +
+                        "</p>" +
+                        "<p class='info-item'>" +
+                            `<b>Views:${card.views}</b>` +
+                        "</p>" +
+                        "<p class='info-item'>" +
+                            `<b>Comments:${card.comments}</b>` +
+                        "</p>" +
+                        "<p class='info-item'>" +
+                            `<b>Downloads:${card.downloads}</b>` +
+                        "</p>" +
+                    "</div>" +
+                "</div>";
+
+    }).sort().join("");
+    
+    gallery.innerHTML = markup_list;
+
+    console.log(markup_list);
+}
+function fetchUsers()
+{
+    return fetch("https://pixabay.com/api/").then((response) =>
+    {
+        if (!response.ok)
+        {
+            if (response.status === 404)
+            {
+                console.log("\nError status - ", response.status + ";");
+
+                return [];
+            }
+            throw new Error(response.status);
+        }
+        return response.json();
+    });
+}
 async function pixabay (name, count)
 {
     const url = 'https://pixabay.com/api/';
@@ -57,64 +90,26 @@ async function pixabay (name, count)
     {
         params:
         {
-            key: '33717102-715c10c4f2cae8a60768f134f', q: name,
+            key: '33717102-715c10c4f2cae8a60768f134f',
             
-            image_type: 'photo', orientation: 'horizontal', safesearch: 'true',
+            q: name, image_type: 'photo', orientation: 'horizontal',
             
-            page: page, per_page: 40
+            safesearch: 'true', page: 'page', per_page: 40
         }
     };
     try
     {
         const response = await axios.get(url, options);
 
-        notification(response.data.hits.length, response.data.hits);
+        notification(response.data.hits.length, response.data.total);
 
-        createMarkup(response.data);
-    } 
+        renderGalleryList(response.data);
+    }
     catch (error)
     {
-        console.log("\n Error: " + error.name + " - " + error.message);
+        console.log(error);
     }
 }
-function createMarkup (data)
-{
-    const markup = data.hits.map(item =>
-    {
-        `<a class="photo-link" href="${item.largeImageURL}">` +
-            '<div class="photo-card">' +
-                '<div class="photo">' +
-                    '<img src="${item.webformatURL}" alt="${item.tags}" loading="lazy"/>' +
-                '</div>' +
-                '<div class="info">' +
-                    '<p class="info-item">' +
-                        `<b>Likes</b>${item.likes}` +
-                    '</p>' +
-                    '<p class="info-item">' +
-                        `<b>Views</b>${item.views}` +
-                    '</p>' +
-                    '<p class="info-item">' +
-                        `<b>Comments</b>${item.comments}` +
-                    '</p>' +
-                    '<p class="info-item">' +
-                        `<b>Downloads</b>${item.downloads}` +
-                    '</p>' +
-                '</div>' +
-            '</div>' +
-        '</a>'
-
-    }).sort().join('');
-
-    gallery.insertAdjacentHTML('beforeend', markup);
-
-    simpleLightBox.refresh();
-}
-const simpleLightBox = new SimpleLightbox('.gallery a',
-{
-    captionsData: 'alt',
-
-    captionDelay: 250
-});
 function notification (total_length, hits)
 {
     if (total_length === 0)
@@ -127,7 +122,7 @@ function notification (total_length, hits)
     }
     else if (count === 1)
     {
-        refs.btnLoadMore.style.display = 'flex';
+        buttonElement.style.display = 'flex';
 
         Notiflix.Notify.success(`Hooray! We found ${hits} images.`);
 
@@ -135,7 +130,7 @@ function notification (total_length, hits)
     }
     else if (total_length < 40)
     {
-        refs.btnLoadMore.style.display = 'none';
+        buttonElement.style.display = 'none';
 
         Notiflix.Notify.warning("We're sorry, but you've reached the end of search results!");
 

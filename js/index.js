@@ -1,6 +1,6 @@
 // Gallery
 
-import axios from '../node_modules/axios/dist/esm/axios.js';
+import axios from '../axios/axios.js';
 
 import SimpleLightbox  from '../simplelightbox/simple-lightbox.esm.js';
 

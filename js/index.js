@@ -2,7 +2,7 @@
 
 import axios from '../axios/axios.js';
 
-import SimpleLightbox  from '../simplelightbox/simple-lightbox.esm.js';
+import { SimpleLightbox }  from '../simplelightbox/simple-lightbox.esm.js';
 
 const body = document.querySelector("body");
 
@@ -26,40 +26,80 @@ form.addEventListener('submit', (e) =>
 
     count = 1;
 
-    gallery.innerHTML = '';
+    gallery.innerHTML = "";
 
-    const name = inputSearch.value.trim();
+    const target_value = inputSearch.value.trim();
 
-    if (name !== '')
+    if (target_value !== '')
     {
-        pixabay(name);
+        pixabay(target_value);
     }
     else
     {
         buttonElement.style.display = 'none';
 
-        return body.setAttribute("body", Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again!'));
+        return body.setAttribute("body", Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again!"));
     }
 });
 buttonElement.addEventListener('click', () =>
 {
-    const name = inputSearch.value.trim();
+    const target_name = inputSearch.value.trim();
   
     count++;
   
-    pixabay(name, count);
+    pixabay(target_name, count);
+});
+function renderGalleryList(data)
+{
+    const markup_list = data.hits.map((card) =>
+    {
+        return "<div class='photo-card'>" +
+                   `<a class="photo-link" href="${card.largeImageURL}">` +
+                       `<img class='photo-image' src="${card.webformatURL}" loading='lazy' alt="${card.tags}"/>` +
+                    "</a>" +
+                    "<div class='info'>" +
+                        "<p class='info-item'>" +
+                            "<b>Likes:&nbsp;&nbsp;</b>" +
+                            `${card.likes};` +
+                        "</p>" +
+                        "<p class='info-item'>" +
+                            "<b>Views:&nbsp;&nbsp;</b>" +
+                            `${card.views};` +
+                        "</p>" +
+                        "<p class='info-item'>" +
+                            "<b>Comments:&nbsp;&nbsp;</b>" +
+                            `${card.comments};` +
+                        "</p>" +
+                        "<p class='info-item'>" +
+                            "<b>Downloads:&nbsp;&nbsp;</b>" +
+                            `${card.downloads};` +
+                        "</p>" +
+                    "</div>" +
+                "</div>";
+
+    }).join("");
+    
+    gallery.innerHTML = markup_list;
+
+    // simpleLightBox.refresh();
+}
+const simpleLightBox = new SimpleLightbox('.gallery a',
+{
+    captionsData: 'alt',
+
+    captionDelay: 250
 });
 async function pixabay (name, count)
 {
     const url = 'https://pixabay.com/api/';
-    
+
     const options =
     {
         params:
         {
-            key: '33717102-715c10c4f2cae8a60768f134f', q: name,
+            key: '33717102-715c10c4f2cae8a60768f134f',
             
-            image_type: 'photo', orientation: 'horizontal',
+            q: name, image_type: 'photo', orientation: 'horizontal',
             
             safesearch: 'true', page: count, per_page: 40
         }
@@ -70,7 +110,7 @@ async function pixabay (name, count)
 
         notification(response.data.hits.length, response.data.total);
 
-        addListApiItems(response.data);
+        renderGalleryList(response.data);
     }
     catch (error)
     {
@@ -78,42 +118,6 @@ async function pixabay (name, count)
 
         console.log("\nError name - " + error.name + ";" + " Error message - " + error.message + ";");
     }
-}
-const simpleLightBox = new SimpleLightbox('.gallery a',
-{
-    captionsData: 'alt',
-
-    captionDelay: 250
-});
-function addListApiItems (data_api)
-{
-    const markup = data_api.hits.map(item =>
-    {
-        `<a class="photo-link" href="${item.largeImageURL}">` +
-            '<div class="photo-card">' +
-                '<div class="photo">' +
-                    `<img src="${item.webformatURL}" alt="${item.tags}" loading="lazy"/>` +
-                '</div>' +
-                '<div class="info">' +
-                    '<p class="info-item">' +
-                        `<b>Likes</b>${item.likes}` +
-                    '</p>' +
-                    '<p class="info-item">' +
-                        `<b>Views</b>${item.views}` +
-                    '</p>' +
-                    '<p class="info-item">' +
-                        `<b>Comments</b>${item.comments}` +
-                    '</p>' +
-                    '<p class="info-item">' +
-                        `<b>Downloads</b>${item.downloads}` +
-                    '</p>' +
-                '</div>' +
-            '</div>' +
-        '</a>'
-
-    }).join("");
-
-    //simpleLightBox.refresh();
 }
 function notification (input_length, total_hits)
 {

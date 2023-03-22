@@ -4,7 +4,7 @@
 	Available for use under the MIT License
 	Version 2.12.1
 */
-class SimpleLightbox {
+export class SimpleLightbox {
 
     defaultOptions = {
         sourceAttr: 'href',
@@ -1566,6 +1566,6 @@ class SimpleLightbox {
         return this;
     }
 }
-export default SimpleLightbox;
+//export default SimpleLightbox;
 
-global.SimpleLightbox = SimpleLightbox;
+//global.SimpleLightbox = SimpleLightbox;

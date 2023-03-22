@@ -1,118 +1,69 @@
-img
+b
 {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    display: block;
-}
-form
-{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding-left: 10px;
 }
 button
 {
-    -webkit-user-select: none;
-    position: relative;
     width: 100px;
-    height: 30px;
-    padding: 5px 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    all: unset;
-    cursor: pointer;
-    white-space: nowrap;
-    user-select: none;
-    touch-action: manipulation;
-    border: none;
-    border-radius: 4px;
-    background-color: rgb(56, 194, 129);
-    color: black;
-}
-    button::after, button::before
-    {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        z-index: -99999;
-        transition: all 0.4s;
-    }
-.container
-{
-    max-width: 1490;
-    margin: 0 auto;
+    height: 35px;
 }
 .gallery
 {
-    padding: 20px 0;
-    margin-bottom: 20px;
+    padding-top: 50px;
+    padding-bottom: 50px;
     display: flex;
+    align-items: center;
     justify-content: center;
+    flex-direction: row;
     flex-wrap: wrap;
-    gap: 30px;
 }
-.photo-card
+.search-form
 {
-    width: 350px;
-    display: inline-block;
-    border: 1px solid black;
-    border-radius: 10px;
-    background-color: cornsilk;
-}
-.photo
-{
-    min-width: 350px;
-    height: 250px;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    background-color: blue;
 }
 .input
 {
     width: 300px;
-    height: 40px;
-    padding-left: 50px;
-    padding-right: 50px;
-    margin-right: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    border: none;
+    height: 30px;
+    padding-left: 10px;
+    margin-right: 5px;
+}
+.container
+{
+    max-width: 1200px;
+    margin: 0 auto;
+    border: 1px solid tomato;
+}
+.photo-card
+{
+    max-width: 300px;
+    margin: 20px;
+    display: block;
+}
+.photo-image
+{
+    width: 300px;
+    height: 200px;
 }
 .info
-{
-    padding: 10px 10px;
-    padding: 0.75rem 1.65rem;
-    display: flex;
-    justify-content: center;
-    justify-content: space-around;
-    gap: 10px;
-    font-weight: 500;
-    font-size: 15px;
-    font-weight: 500;
-    text-align: center;
-    line-height: 1;
-    line-height: 1.75rem;
-    color: black;
-}  
-.info-item
 {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    flex-wrap: wrap;
+}
+.info-item
+{
+    margin: 5px auto;
 }
 .load-more
 {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 40px;
-}
-.search-form
-{
-    background-color: rgb(63 86 177);
+    width: 100px;
+    height: 30px;
 }

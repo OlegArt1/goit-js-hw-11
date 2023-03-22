@@ -16,8 +16,39 @@ const buttonElement = document.querySelector(".load-more");
 
 const buttonSearch = document.querySelector("button");
 
+const modalContainerElement = document.createElement("div");
+
+const modalContentElement = document.createElement("div");
+
 let count = 1;
 
+modalContainerElement.classList.add("image-modal-overlay");
+
+modalContentElement.classList.add("image-modal");
+
+gallery.after(modalContainerElement);
+
+modalContainerElement.append(modalContentElement);
+
+document.addEventListener('click', (event) =>
+{
+    if (event.target.nodeName !== 'IMG')
+    {
+        return;
+    }
+    modalContainerElement.classList.add('visible');
+    
+    modalContentElement.innerHTML = '';
+    
+    modalContentElement.insertAdjacentHTML('beforeend', `<img class='image' src='${event.target.src}' alt='${event.target.alt}'/>`);
+});
+document.addEventListener('keydown', (event) =>
+{
+    if (event.code === 'Escape')
+    {
+        modalContainerElement.classList.remove('visible');
+    }
+});
 buttonElement.style.display = 'none';
 
 form.addEventListener('submit', (e) =>
@@ -54,7 +85,7 @@ function renderGalleryList(data)
     const markup_list = data.hits.map((card) =>
     {
         return "<div class='photo-card'>" +
-                   `<a class="photo-link" href="${card.largeImageURL}">` +
+                   `<a class="photo-link" href="#">` +
                        `<img class='photo-image' src="${card.webformatURL}" loading='lazy' alt="${card.tags}"/>` +
                     "</a>" +
                     "<div class='info'>" +

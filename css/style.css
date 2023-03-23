@@ -38,12 +38,11 @@ button
 {
     max-width: 1200px;
     margin: 0 auto;
-    border: 1px solid tomato;
 }
 .photo-card
 {
     max-width: 300px;
-    margin: 20px;
+    margin: 25px;
     display: block;
 }
 .photo-image
@@ -66,6 +65,7 @@ button
 {
     width: 100px;
     height: 30px;
+    margin: 50px auto;
 }
 .image-modal-overlay
 {

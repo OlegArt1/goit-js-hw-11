@@ -1,8 +1,8 @@
-// Gallery
+// Gallery Pixabey
 
-import axios from '../axios/axios.js';
+import { axios } from "../axios/axios.js";
 
-import { SimpleLightbox }  from '../simplelightbox/simple-lightbox.esm.js';
+import { SimpleLightbox } from "../simplelightbox/simple-lightbox.esm.js";
 
 const body = document.querySelector("body");
 
@@ -48,6 +48,10 @@ document.addEventListener('keydown', (event) =>
     {
         modalContainerElement.classList.remove('visible');
     }
+});
+modalContainerElement.addEventListener('click', () =>
+{
+    modalContainerElement.classList.remove('visible');
 });
 buttonElement.style.display = 'none';
 

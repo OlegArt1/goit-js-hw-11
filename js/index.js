@@ -1,6 +1,6 @@
 // Gallery Pixabey
 
-import { axios } from "../axios/axios.js";
+import axios from "../axios/axios.js";
 
 import { SimpleLightbox } from "../simplelightbox/simple-lightbox.esm.js";
 
